@@ -1,0 +1,59 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Chroma Database
+chroma_db/
+*.chroma
+
+# Chat history / storage
+*.pkl
+assistant_chats.db
+*.db
+chat_history.pkl
+
+# Temporary audio files
+/tmp/
+*.wav
+*.mp3
+temp_voice.mp3
+assistant_voice.wav
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# Model cache (optional - uncomment if you don't want to track large models)
+# .cache/
+# *.onnx
+# *.bin
