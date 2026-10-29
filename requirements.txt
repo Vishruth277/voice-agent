@@ -4,3 +4,4 @@ numpy
 gTTS
 faster-whisper
 edge-tts
+langdetect

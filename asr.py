@@ -7,14 +7,14 @@ from config import (
     WHISPER_MODEL_SIZE, WHISPER_DEVICE, WHISPER_COMPUTE_TYPE
 )
 
-print("-> Loading Local Speech Engine (Faster-Whisper Tiny with Native VAD)...")
+print("-> Loading Local Speech Engine (Faster-Whisper Base Multilingual with Native VAD)...")
 asr_model = WhisperModel(
     WHISPER_MODEL_SIZE,
     device=WHISPER_DEVICE,
     compute_type=WHISPER_COMPUTE_TYPE
 )
 
-def listen() -> str:
+def listen() -> tuple:
     """
     Capture speech from the microphone.
     Supports short pauses and stops after sustained silence or max duration.
@@ -33,7 +33,7 @@ def listen() -> str:
     except Exception as e:
         print(f"\n[ERROR] Could not access your microphone: {e}")
         p.terminate()
-        return ""
+        return "", "en"
 
     stream.start_stream()
     print("\n[Status]: Listening... Speak now (You can take pauses).")
@@ -70,13 +70,13 @@ def listen() -> str:
 
     if not has_spoken:
         print("[Status]: No speech detected.")
-        return ""
+        return "", "en"
 
     print("[Status]: Filtering noise and processing speech...")
     raw_audio = b"".join(frames)
     audio_np = np.frombuffer(raw_audio, dtype=np.int16).astype(np.float32) / 32768.0
 
-    segments, _ = asr_model.transcribe(
+    segments, info = asr_model.transcribe(
         audio_np,
         beam_size=2,
         vad_filter=True,
@@ -87,5 +87,7 @@ def listen() -> str:
     )
 
     user_text = "".join(segment.text for segment in segments).strip()
+    detected_language = info.language if info else "en"
     print(f"[You Said]: {user_text}")
-    return user_text
+    print(f"[Detected Language]: {detected_language}")
+    return user_text, detected_language

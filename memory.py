@@ -2,7 +2,7 @@ from config import MAX_HISTORY_MESSAGES
 from storage import ChatStorage
 
 class ConversationMemory:
-    def __init__(self, storage: ChatStorage = None, session_id: str = None):
+    def __init__(self, storage: ChatStorage = None, session_id: str = None, language: str = "English"):
         self.storage = storage or ChatStorage()
         self.session_id = session_id or self.storage.create_session()
 
@@ -16,6 +16,12 @@ class ConversationMemory:
                 "content": (
                     "You are a helpful, professional corporate voice assistant appliance. "
                     "The user input comes from a live microphone speech decoder. Ignore minor typos. "
+                    f"The user may speak in {language} or any other Indian language. "
+                    "Language guardrails: "
+                    "1. Always greet the user in English at the start of the conversation. "
+                    "2. Detect the language the user speaks in and respond in that same language and style. "
+                    "3. If the user switches language mid-conversation, immediately switch to match their new language. "
+                    f"4. If the user speaks {language}, respond in {language}. If the user speaks English, respond in English. "
                     "Crucial: Remember details, contexts, and names mentioned earlier in the chat "
                     "to hold a continuous conversation. "
                     "Keep your responses friendly, brief, and under two sentences."
